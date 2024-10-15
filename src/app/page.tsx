@@ -44,6 +44,7 @@ export default function Home() {
     const headers = {
       
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
   
   }
   
@@ -51,6 +52,9 @@ export default function Home() {
       .post(url, payload, { headers })
       .then((response) => {
         console.log("Respuesta del servidor:", response.data);
+        if (response) {
+          window.location.href = response.data.paymentUrl;
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
