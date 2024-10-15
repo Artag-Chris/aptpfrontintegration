@@ -1,15 +1,40 @@
 "use client";
-import Image from 'next/image'
-import Link from 'next/link'
-import { ShoppingCart } from 'lucide-react'
-import { Button } from './components/ui/Button'
-import { Input } from './components/ui/Input'
-import { Label } from './components/ui/Label'
-import { Separator } from './components/ui/Separator'
-
+import Image from "next/image";
+import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
+import { Button } from "./components/ui/Button";
+import { Input } from "./components/ui/Input";
+import { Label } from "./components/ui/Label";
+import { Separator } from "./components/ui/Separator";
+import axios from "axios";
 
 const handleButtonClick = () => {
-  console.log('Botón clicado!');
+  const url = "http://localhost:2345/aptp/cheackout/simplelogin"; // reemplaza con la URL que deseas
+  const payload = {
+    reference: "una referencia",
+    description: "una descripcion",
+    amount: {
+      currency: "cop",
+      total: 200000,
+    },
+    ipAddress: "103.12.13.14",
+    userAgent: "intertentexplorer/5.0(Windows 6)",
+  };
+
+  const headers = {
+    
+    'Content-Type': 'application/json',
+
+}
+
+  axios
+    .post(url, payload, { headers })
+    .then((response) => {
+      console.log("Respuesta del servidor:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 };
 export default function Home() {
   return (
@@ -20,13 +45,22 @@ export default function Home() {
           <span className="ml-2 text-lg font-semibold">Artag Tech Shop</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="#"
+          >
             Home
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="#"
+          >
             Shop
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="#"
+          >
             About
           </Link>
         </nav>
@@ -48,12 +82,15 @@ export default function Home() {
                     Smartwatch XYZ
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Experience the future on your wrist with our latest smartwatch. Sleek design meets cutting-edge technology.
+                    Experience the future on your wrist with our latest
+                    smartwatch. Sleek design meets cutting-edge technology.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button size="lg">Shop Now</Button>
-                  <Button size="lg" variant="outline">Learn More</Button>
+                  <Button size="lg" variant="outline">
+                    Learn More
+                  </Button>
                 </div>
               </div>
             </div>
@@ -61,7 +98,9 @@ export default function Home() {
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
           <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8">Checkout</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8">
+              Checkout
+            </h2>
             <div className="grid gap-10 px-10 py-8 md:gap-16 lg:grid-cols-2">
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -70,7 +109,11 @@ export default function Home() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" placeholder="Enter your email" type="email" />
+                  <Input
+                    id="email"
+                    placeholder="Enter your email"
+                    type="email"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="address">Address</Label>
@@ -101,7 +144,11 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full" size="lg" onClick={handleButtonClick}>
+                <Button
+                  className="w-full"
+                  size="lg"
+                  onClick={handleButtonClick}
+                >
                   Proceed to Payment
                 </Button>
               </div>
@@ -110,7 +157,9 @@ export default function Home() {
         </section>
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-muted-foreground">© 2024 Acme Inc. All rights reserved.</p>
+        <p className="text-xs text-muted-foreground">
+          © 2024 Acme Inc. All rights reserved.
+        </p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link className="text-xs hover:underline underline-offset-4" href="#">
             Terms of Service
@@ -121,5 +170,5 @@ export default function Home() {
         </nav>
       </footer>
     </div>
-  )
+  );
 }
