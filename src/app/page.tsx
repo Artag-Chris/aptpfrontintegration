@@ -1,3 +1,4 @@
+"use client";
 import Image from 'next/image'
 import Link from 'next/link'
 import { ShoppingCart } from 'lucide-react'
@@ -7,6 +8,9 @@ import { Label } from './components/ui/Label'
 import { Separator } from './components/ui/Separator'
 
 
+const handleButtonClick = () => {
+  console.log('Botón clicado!');
+};
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -97,7 +101,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full" size="lg">
+                <Button className="w-full" size="lg" onClick={handleButtonClick}>
                   Proceed to Payment
                 </Button>
               </div>
