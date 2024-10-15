@@ -6,37 +6,57 @@ import { Button } from "./components/ui/Button";
 import { Input } from "./components/ui/Input";
 import { Label } from "./components/ui/Label";
 import { Separator } from "./components/ui/Separator";
+
 import axios from "axios";
+import { useState } from "react";
 
-const handleButtonClick = () => {
-  const url = "http://localhost:2345/aptp/cheackout/simplelogin"; // reemplaza con la URL que deseas
-  const payload = {
-    reference: "una referencia",
-    description: "una descripcion",
-    amount: {
-      currency: "cop",
-      total: 200000,
-    },
-    ipAddress: "103.12.13.14",
-    userAgent: "intertentexplorer/5.0(Windows 6)",
-  };
 
-  const headers = {
-    
-    'Content-Type': 'application/json',
 
-}
 
-  axios
-    .post(url, payload, { headers })
-    .then((response) => {
-      console.log("Respuesta del servidor:", response.data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-};
+
+
 export default function Home() {
+  const [ip, setIp] = useState("");
+ 
+
+  const getIp = async () => {
+    const getIp = await fetch('https://api.ipify.org');
+    const ipText = await getIp.text();
+    setIp(ipText);
+  };
+  const handleButtonClick = () => {
+  
+    const userAgent = window.navigator.userAgent;
+  
+    
+    const url = "http://localhost:2345/aptp/cheackout/simplelogin"; // reemplaza con la URL que deseas
+    const payload = {
+      reference: "una referencia",
+      description: "una descripcion",
+      amount: {
+        currency: "cop",
+        total: 200000,
+      },
+      ipAddress: ip,
+      userAgent: userAgent,
+    };
+  
+    const headers = {
+      
+      'Content-Type': 'application/json',
+  
+  }
+  
+    axios
+      .post(url, payload, { headers })
+      .then((response) => {
+        console.log("Respuesta del servidor:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+  getIp();
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="px-4 lg:px-6 h-14 flex items-center border-b">
