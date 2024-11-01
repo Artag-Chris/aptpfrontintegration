@@ -8,52 +8,76 @@ import { Label } from "./components/ui/Label";
 import { Separator } from "./components/ui/Separator";
 
 import axios from "axios";
-import { useState } from "react";
-
-
-
-
-
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [ip, setIp] = useState("");
- 
+  const [message, setMessage] = useState<any>("");
+  const [idResquest, setId] = useState<any>("");
+  //const requestId = localStorage.getItem("requestId") || "";
 
   const getIp = async () => {
-    const getIp = await fetch('https://api.ipify.org');
+    const getIp = await fetch("https://api.ipify.org");
     const ipText = await getIp.text();
     setIp(ipText);
   };
+  /*
+  const ws = new WebSocket('ws://localhost:15037/ws');
+
+  ws.onmessage = (event) => {
+    console.log(`Mensaje recibido: ${event.data}`);
+  };
+  
+  ws.onopen = () => {
+    console.log('Conectado al servidor');
+    ws.send('Hola, servidor!');
+  };
+  
+  ws.onerror = (event) => {
+    console.log('Error:', event);
+  };
+  
+  ws.onclose = () => {
+    console.log('Desconectado del servidor');
+  };
+  */
   const handleButtonClick = () => {
-  
+    // console.log("IP:", ip);
     const userAgent = window.navigator.userAgent;
-  
-    
-    const url = "http://localhost:15037/aptp/cheackout/simplelogin"; 
+
+    const url = "http://localhost:15037/aptp/cheackout/simplelogin";
     const payload = {
       reference: "una referencia sw pago",
       description: "una descripcion de un servicio",
       amount: {
         currency: "cop",
-        total: 120000.00
+        total: 120000.0,
       },
       ipAddress: ip,
       userAgent: userAgent,
     };
-  
+
     const headers = {
-      
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-  
-  }
-  
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+
     axios
       .post(url, payload, { headers })
       .then((response) => {
-        console.log("Respuesta del servidor:", response.data);
+        // console.log("Respuesta del servidor:", response.data);
         if (response) {
-          console.log("Respuesta del servidor:", response.data);
+          //setMessage(response.data);
+
+         // setId(response.data.requestId);
+          // Guardar en localStorage
+          localStorage.setItem("requestId",response.data.requestId );
+
+          // Recuperar de localStorage
+         
+
+          //console.log("Respuesta del servidor:", response.data);
+          console.log("Respuesta del servidor:", response.data.requestId);
           window.location.href = response.data.processUrl;
         }
       })
@@ -62,6 +86,7 @@ export default function Home() {
       });
   };
   getIp();
+  
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="px-4 lg:px-6 h-14 flex items-center border-b">
