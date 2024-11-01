@@ -7,6 +7,17 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Component() {
+
+  const payload = {
+    reference: "una referencia",
+    description: "una descripcion",
+    amount: {
+      currency: "cop",
+      total: 200000,
+    },
+    ipAddress: "127.0.0.1",
+    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+  }
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50">
       <header className="px-4 lg:px-6 h-14 flex items-center">
@@ -86,7 +97,7 @@ export default function Component() {
                     type="email"
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2">t requestId = data.requestId;
                   <Label htmlFor="address">Address</Label>
                   <Input id="address" placeholder="Enter your address" />
                 </div>
@@ -111,12 +122,12 @@ export default function Component() {
                     <Separator className="my-2" />
                     <div className="flex justify-between font-bold">
                       <span>Total</span>
-                      <span>$339.98</span>
+                      <span>$599.99</span>
                     </div>
                   </div>
                 </div>
                 <Button className="w-full bg-zinc-900 text-white hover:bg-zinc-800">
-                  Abrir medios de pago
+                 hola boton
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>

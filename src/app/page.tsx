@@ -29,13 +29,13 @@ export default function Home() {
     const userAgent = window.navigator.userAgent;
   
     
-    const url = "http://localhost:2345/aptp/cheackout/simplelogin"; // reemplaza con la URL que deseas
+    const url = "http://localhost:15037/aptp/cheackout/simplelogin"; 
     const payload = {
-      reference: "una referencia",
-      description: "una descripcion",
+      reference: "una referencia sw pago",
+      description: "una descripcion de un servicio",
       amount: {
         currency: "cop",
-        total: 200000,
+        total: 120000.00
       },
       ipAddress: ip,
       userAgent: userAgent,
@@ -53,7 +53,8 @@ export default function Home() {
       .then((response) => {
         console.log("Respuesta del servidor:", response.data);
         if (response) {
-          window.location.href = response.data.paymentUrl;
+          console.log("Respuesta del servidor:", response.data);
+          window.location.href = response.data.processUrl;
         }
       })
       .catch((error) => {
@@ -173,7 +174,7 @@ export default function Home() {
                   size="lg"
                   onClick={handleButtonClick}
                 >
-                  Proceed to Payment
+                  a pagar
                 </Button>
               </div>
             </div>
