@@ -1,3 +1,4 @@
+/*
 // pages/api/ws.js
 import { NextApiRequest, NextApiResponse } from 'next';
 import WebSocket from 'ws';
@@ -17,7 +18,7 @@ wss.on('connection', (ws) => {
     console.log('Cliente desconectado');
   });
 });
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // No se necesita hacer nada aquí, solo se necesita exportar la función
 }
+*/

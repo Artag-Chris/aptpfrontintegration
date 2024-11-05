@@ -8,39 +8,16 @@ import { Label } from "./components/ui/Label";
 import { Separator } from "./components/ui/Separator";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Home() {
   const [ip, setIp] = useState("");
-  const [message, setMessage] = useState<any>("");
-  const [idResquest, setId] = useState<any>("");
-  //const requestId = localStorage.getItem("requestId") || "";
-
   const getIp = async () => {
     const getIp = await fetch("https://api.ipify.org");
     const ipText = await getIp.text();
     setIp(ipText);
   };
-  /*
-  const ws = new WebSocket('ws://localhost:15037/ws');
-
-  ws.onmessage = (event) => {
-    console.log(`Mensaje recibido: ${event.data}`);
-  };
   
-  ws.onopen = () => {
-    console.log('Conectado al servidor');
-    ws.send('Hola, servidor!');
-  };
-  
-  ws.onerror = (event) => {
-    console.log('Error:', event);
-  };
-  
-  ws.onclose = () => {
-    console.log('Desconectado del servidor');
-  };
-  */
   const handleButtonClick = () => {
     // console.log("IP:", ip);
     const userAgent = window.navigator.userAgent;
@@ -65,18 +42,10 @@ export default function Home() {
     axios
       .post(url, payload, { headers })
       .then((response) => {
-        // console.log("Respuesta del servidor:", response.data);
+      
         if (response) {
-          //setMessage(response.data);
-
-         // setId(response.data.requestId);
-          // Guardar en localStorage
+        
           localStorage.setItem("requestId",response.data.requestId );
-
-          // Recuperar de localStorage
-         
-
-          //console.log("Respuesta del servidor:", response.data);
           console.log("Respuesta del servidor:", response.data.requestId);
           window.location.href = response.data.processUrl;
         }

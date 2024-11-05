@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Button } from "@/components/ui/button"
 
 interface TransactionResponse {
   requestId: number
@@ -39,24 +41,45 @@ export default function TransactionResult() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const router = useRouter()
+
   useEffect(() => {
-    const requestId = localStorage.getItem('requestId')
-    if (requestId) {
-      axios.get<TransactionResponse>(`http://localhost:15037/aptp/cheackout/consultrequest/${requestId}`)
-        .then(response => {
-          setTransactionData(response.data)
-          setIsLoading(false)
-        })
-        .catch(error => {
-          console.error('Error fetching transaction data:', error)
-          setError('Hubo un problema al cargar los datos de la transacción. Por favor, intente nuevamente.')
-          setIsLoading(false)
-        })
-    } else {
-      setError('No se encontró el ID de la transacción.')
-      setIsLoading(false)
-    }
-  }, [])
+    console.log("Executing useEffect");
+  
+    // Bandera para evitar llamadas duplicadas
+    let didCancel = false;
+  
+    const fetchData = async () => {
+      const requestId = localStorage.getItem('requestId');
+  
+      if (requestId) {
+        try {
+          const response = await axios.get<TransactionResponse>(`http://localhost:15037/aptp/cheackout/consultrequest/${requestId}`);
+          if (!didCancel) {
+            setTransactionData(response.data);
+            setIsLoading(false);
+          }
+        } catch (error) {
+          if (!didCancel) {
+            console.error('Error fetching transaction data:', error);
+            setError('Hubo un problema al cargar los datos de la transacción. Por favor, intente nuevamente.');
+            setIsLoading(false);
+          }
+        }
+      } else {
+        setError('No se encontró el ID de la transacción.');
+        setIsLoading(false);
+      }
+    };
+  
+    fetchData();
+  
+    // Cleanup function
+    return () => {
+      didCancel = true;
+    };
+  }, []);
+  
 
   if (isLoading) {
     return (
@@ -111,6 +134,14 @@ export default function TransactionResult() {
               <p className="text-gray-600"><span className="font-semibold">Entidad:</span> {payment[0].issuerName}</p>
               <p className="text-gray-600"><span className="font-semibold">Autorización:</span> {payment[0].authorization}</p>
               <p className="text-gray-600"><span className="font-semibold">Recibo:</span> {payment[0].receipt}</p>
+            </div>
+            <div className="mt-6 text-center">
+              <Button 
+                onClick={() => router.push('/')} 
+                className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+              >
+                Volver al inicio
+              </Button>
             </div>
           </div>
         </div>
