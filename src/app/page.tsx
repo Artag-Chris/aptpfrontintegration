@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
@@ -6,46 +6,47 @@ import { Button } from "./components/ui/Button";
 import { Input } from "./components/ui/Input";
 import { Label } from "./components/ui/Label";
 import { Separator } from "./components/ui/Separator";
-
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [ip, setIp] = useState("");
-  const getIp = async () => {
-    const getIp = await fetch("https://api.ipify.org");
-    const ipText = await getIp.text();
-    setIp(ipText);
-  };
-  
-  const handleButtonClick = () => {
-    // console.log("IP:", ip);
-    const userAgent = window.navigator.userAgent;
 
-    const url = "http://localhost:15037/aptp/cheackout/simplelogin";
+  useEffect(() => {
+    const getIp = async () => {
+      try {
+        const response = await fetch("https://api.ipify.org");
+        const ipText = await response.text();
+        setIp(ipText);
+      } catch (error) {
+        console.error("Error fetching IP:", error);
+      }
+    };
+
+    getIp();
+  }, []);
+
+  const handleButtonClick = async() => {
+   
+    const userAgent = window.navigator.userAgent;
+    const url = "https://pasarelagou.solucredito.com.co/aptp/cheackout/simplelogin";
     const payload = {
       reference: "una referencia sw pago",
       description: "una descripcion de un servicio",
       amount: {
         currency: "cop",
-        total: 120000.0,
+        total: 1000000.00,
       },
       ipAddress: ip,
       userAgent: userAgent,
     };
-
-    const headers = {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    };
-
-    axios
-      .post(url, payload, { headers })
+   
+    await axios
+      .post(url, payload)
       .then((response) => {
-      
-        if (response) {
         
-          localStorage.setItem("requestId",response.data.requestId );
+        if (response) {
+          localStorage.setItem("requestId", response.data.requestId);
           console.log("Respuesta del servidor:", response.data.requestId);
           window.location.href = response.data.processUrl;
         }
@@ -54,8 +55,7 @@ export default function Home() {
         console.error("Error:", error);
       });
   };
-  getIp();
-  
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="px-4 lg:px-6 h-14 flex items-center border-b">
@@ -64,22 +64,13 @@ export default function Home() {
           <span className="ml-2 text-lg font-semibold">Artag Tech Shop</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
             Home
           </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
             Shop
           </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
             About
           </Link>
         </nav>
@@ -101,8 +92,7 @@ export default function Home() {
                     Smartwatch XYZ
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Experience the future on your wrist with our latest
-                    smartwatch. Sleek design meets cutting-edge technology.
+                    Experience the future on your wrist with our latest smartwatch. Sleek design meets cutting-edge technology.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -128,11 +118,7 @@ export default function Home() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    placeholder="Enter your email"
-                    type="email"
-                  />
+                  <Input id="email" placeholder="Enter your email" type="email" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="address">Address</Label>
@@ -163,11 +149,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <Button
-                  className="w-full"
-                  size="lg"
-                  onClick={handleButtonClick}
-                >
+                <Button className="w-full" size="lg" onClick={handleButtonClick}>
                   a pagar
                 </Button>
               </div>

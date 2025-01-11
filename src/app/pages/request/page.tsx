@@ -54,7 +54,7 @@ export default function TransactionResult() {
   
       if (requestId) {
         try {
-          const response = await axios.get<TransactionResponse>(`http://localhost:15037/aptp/cheackout/consultrequest/${requestId}`);
+          const response = await axios.get<TransactionResponse>(`https://pasarelagou.solucredito.com.co/aptp/cheackout/consultrequest/${requestId}`);
           if (!didCancel) {
             setTransactionData(response.data);
             setIsLoading(false);
